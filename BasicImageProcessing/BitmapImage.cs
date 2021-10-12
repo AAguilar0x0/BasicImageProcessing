@@ -141,32 +141,7 @@ namespace BasicImageProcessing
             return new BitmapImage(newImage);
         }
 
-        /*public BitmapImage contrast(int contrast)
-        {
-            int width = image.Width;
-            int height = image.Height;
-            float contrastCorrectionFactor = (259 * (contrast + 255)) / (255 * (259 - contrast));
-            Bitmap newImage = new Bitmap(width, height);
-            for (int y = 0; y < height; y++)
-                for (int x = 0; x < width; x++)
-                {
-                    Color pixel = image.GetPixel(x, y);
-                    Console.WriteLine((contrastCorrectionFactor * (pixel.R - 128) + 128) + " " +
-                        (contrastCorrectionFactor * (pixel.G - 128) + 128) + " " +
-                        (contrastCorrectionFactor * (pixel.B - 128) + 128) + " ");
-                    newImage.SetPixel(x, y, Color.FromArgb(
-                        colorCorrect((int)(contrastCorrectionFactor * (pixel.R - 128) + 128)),
-                        colorCorrect((int)(contrastCorrectionFactor * (pixel.G - 128) + 128)),
-                        colorCorrect((int)(contrastCorrectionFactor * (pixel.B - 128) + 128))
-                    *//*colorCorrector((int)(((pixel.R / 255.0f * contrast) + 0.5f) * 255.0f)),
-                    colorCorrector((int)(((pixel.G / 255.0f * contrast) + 0.5f) * 255.0f)),
-                    colorCorrector((int)(((pixel.B / 255.0f * contrast) + 0.5f) * 255.0f))*//*
-                    ));
-                }
-            return new BitmapImage(newImage);
-        }*/
-
-        public BitmapImage contrast(int degree)
+        public BitmapImage contrast(float degree = 0)
         {
             int width = image.Width;
             int height = image.Height;
@@ -203,11 +178,17 @@ namespace BasicImageProcessing
             for (int i = 0; i < 256; i++)
             {
                 histRedSum += histRed[i];
-                YmapRed[i] = histRedSum * 255 / totalSample;
+                YmapRed[i] = (int)((histRedSum * 255 / totalSample) * degree / 100);
                 histGreenSum += histGreen[i];
-                YmapGreen[i] = histGreenSum * 255 / totalSample;
+                YmapGreen[i] = (int)((histGreenSum * 255 / totalSample) * degree / 100);
                 histBlueSum += histBlue[i];
-                YmapBlue[i] = histBlueSum * 255 / totalSample;
+                YmapBlue[i] = (int)((histBlueSum * 255 / totalSample) * degree / 100);
+            }
+            for (int i = 0; i < 256; i++)
+            {
+                YmapRed[i] = (int)(i + (YmapRed[i] - i) * degree / 100);
+                YmapGreen[i] = (int)(i + (YmapGreen[i] - i) * degree / 100);
+                YmapBlue[i] = (int)(i + (YmapBlue[i] - i) * degree / 100);
             }
             Bitmap newImage = new Bitmap(width, height);
             for (int y = 0; y < height; y++)
@@ -218,69 +199,6 @@ namespace BasicImageProcessing
                 }
             return new BitmapImage(newImage);
         }
-
-        /*public void equalization(ref Bitmap a, ref Bitmap b, int degree)
-        {​
-            int height = a.Height;
-            int width = a.Width;
-            int numSamples, histSum;
-            int[] Ymap = new int[256];
-            int[] hist = new int[256];
-            int percent = degree;
-            // compute the histogram from the sub-image
-            Color nakuha;
-            Color gray;
-            Byte graydata;
-            //compute greyscale
-            for (int x = 0; x < a.Width; x++)
-            {​
-                for (int y = 0; y < a.Height; y++)
-                {​
-                    nakuha = a.GetPixel(x, y);
-                    graydata = (byte)((nakuha.R + nakuha.G + nakuha.B) / 3);
-                    gray = Color.FromArgb(graydata, graydata, graydata);
-                    a.SetPixel(x, y, gray);
-                }​
-            }​
-            //histogram 1d data;
-            for (int x = 0; x < a.Width; x++)
-            {​
-                for (int y = 0; y < a.Height; y++)
-                {​
-                    nakuha = a.GetPixel(x, y);
-                    hist[nakuha.B]++;
-                }​
-            }​
-            // remap the Ys, use the maximum contrast (percent == 100)
-            // based on histogram equalization
-            numSamples = (a.Width * a.Height); // # of samples that contributed to the histogram
-            histSum = 0;
-            for (int h = 0; h < 256; h++)
-            {​
-                histSum += hist[h];
-                Ymap[h] = histSum * 255 / numSamples;
-            }​
-             // if desired contrast is not maximum (percent < 100), then adjust the mapping
-            if (percent < 100)
-            {​
-                for (int h = 0; h < 256; h++)
-                {​
-                    Ymap[h] = h + ((int)Ymap[h] - h) * percent / 100;
-                }​
-            }​
-             b = new Bitmap(a.Width, a.Height);
-            // enhance the region by remapping the intensities
-            for (int y = 0; y < a.Height; y++)
-            {​
-                for (int x = 0; x < a.Width; x++)
-                {​
-                    // set the new value of the gray value
-                    Color temp = Color.FromArgb(Ymap[a.GetPixel(x, y).R], Ymap[a.GetPixel(x, y).G], Ymap[a.GetPixel(x, y).B]);
-                    b.SetPixel(x, y, temp);
-                }​
-             }​
-        }*/
-
 
         public BitmapImage flipHorizontal()
         {
@@ -306,6 +224,29 @@ namespace BasicImageProcessing
                 {
                     Color pixel = image.GetPixel(x, y);
                     newImage.SetPixel(width - 1 - x, y, pixel);
+                }
+            return new BitmapImage(newImage);
+        }
+
+        public BitmapImage rotate(float degree)
+        {
+            int width = image.Width;
+            int height = image.Height;
+            int xCenter = width / 2;
+            int yCenter = height / 2;
+            double radiance = (degree * Math.PI / 180);
+            float cosA = (float)Math.Cos(radiance);
+            float sinA = (float)Math.Sin(radiance);
+            Bitmap newImage = new Bitmap(width, height);
+            for (int y = 0; y < height; y++)
+                for (int x = 0; x < width; x++)
+                {
+                    int xi = x - xCenter;
+                    int yi = y - yCenter;
+                    newImage.SetPixel(x, y, image.GetPixel(
+                        Math.Max(0, Math.Min(width - 1, (int)(xi * cosA + yi * sinA) + xCenter)),
+                        Math.Max(0, Math.Min(height - 1, (int)(-xi * sinA + yi * cosA) + yCenter))
+                        ));
                 }
             return new BitmapImage(newImage);
         }

@@ -37,15 +37,18 @@ namespace BasicImageProcessing
             this.load = new System.Windows.Forms.ToolStripMenuItem();
             this.histogram = new System.Windows.Forms.ToolStripMenuItem();
             this.copy = new System.Windows.Forms.ToolStripMenuItem();
+            this.save = new System.Windows.Forms.ToolStripMenuItem();
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.effect = new System.Windows.Forms.ToolStripMenuItem();
             this.greyscale = new System.Windows.Forms.ToolStripMenuItem();
             this.invert = new System.Windows.Forms.ToolStripMenuItem();
             this.sepia = new System.Windows.Forms.ToolStripMenuItem();
             this.brightness = new System.Windows.Forms.ToolStripMenuItem();
             this.contrast = new System.Windows.Forms.ToolStripMenuItem();
+            this.transform = new System.Windows.Forms.ToolStripMenuItem();
             this.flipHorizontal = new System.Windows.Forms.ToolStripMenuItem();
             this.flipVertical = new System.Windows.Forms.ToolStripMenuItem();
-            this.save = new System.Windows.Forms.ToolStripMenuItem();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.rotate = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.source)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.result)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -82,17 +85,13 @@ namespace BasicImageProcessing
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.load,
             this.histogram,
             this.copy,
-            this.greyscale,
-            this.invert,
-            this.sepia,
-            this.brightness,
-            this.contrast,
-            this.flipHorizontal,
-            this.flipVertical,
+            this.effect,
+            this.transform,
             this.save});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -119,48 +118,6 @@ namespace BasicImageProcessing
             this.copy.Size = new System.Drawing.Size(47, 20);
             this.copy.Text = "Copy";
             // 
-            // greyscale
-            // 
-            this.greyscale.Name = "greyscale";
-            this.greyscale.Size = new System.Drawing.Size(69, 20);
-            this.greyscale.Text = "Greyscale";
-            // 
-            // invert
-            // 
-            this.invert.Name = "invert";
-            this.invert.Size = new System.Drawing.Size(49, 20);
-            this.invert.Text = "Invert";
-            // 
-            // sepia
-            // 
-            this.sepia.Name = "sepia";
-            this.sepia.Size = new System.Drawing.Size(47, 20);
-            this.sepia.Text = "Sepia";
-            // 
-            // brightness
-            // 
-            this.brightness.Name = "brightness";
-            this.brightness.Size = new System.Drawing.Size(74, 20);
-            this.brightness.Text = "Brightness";
-            // 
-            // contrast
-            // 
-            this.contrast.Name = "contrast";
-            this.contrast.Size = new System.Drawing.Size(64, 20);
-            this.contrast.Text = "Contrast";
-            // 
-            // flipHorizontal
-            // 
-            this.flipHorizontal.Name = "flipHorizontal";
-            this.flipHorizontal.Size = new System.Drawing.Size(96, 20);
-            this.flipHorizontal.Text = "Flip Horizontal";
-            // 
-            // flipVertical
-            // 
-            this.flipVertical.Name = "flipVertical";
-            this.flipVertical.Size = new System.Drawing.Size(79, 20);
-            this.flipVertical.Text = "Flip Vertical";
-            // 
             // save
             // 
             this.save.Name = "save";
@@ -177,6 +134,78 @@ namespace BasicImageProcessing
             this.trackBar1.Size = new System.Drawing.Size(385, 45);
             this.trackBar1.TabIndex = 10;
             // 
+            // effect
+            // 
+            this.effect.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.greyscale,
+            this.invert,
+            this.sepia,
+            this.brightness,
+            this.contrast});
+            this.effect.Name = "effect";
+            this.effect.Size = new System.Drawing.Size(49, 20);
+            this.effect.Text = "Effect";
+            this.effect.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.effect_DropDownItemClicked);
+            // 
+            // greyscale
+            // 
+            this.greyscale.Name = "greyscale";
+            this.greyscale.Size = new System.Drawing.Size(129, 22);
+            this.greyscale.Text = "Greyscale";
+            // 
+            // invert
+            // 
+            this.invert.Name = "invert";
+            this.invert.Size = new System.Drawing.Size(129, 22);
+            this.invert.Text = "Invert";
+            // 
+            // sepia
+            // 
+            this.sepia.Name = "sepia";
+            this.sepia.Size = new System.Drawing.Size(129, 22);
+            this.sepia.Text = "Sepia";
+            // 
+            // brightness
+            // 
+            this.brightness.Name = "brightness";
+            this.brightness.Size = new System.Drawing.Size(129, 22);
+            this.brightness.Text = "Brightness";
+            // 
+            // contrast
+            // 
+            this.contrast.Name = "contrast";
+            this.contrast.Size = new System.Drawing.Size(129, 22);
+            this.contrast.Text = "Contrast";
+            // 
+            // transform
+            // 
+            this.transform.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.flipHorizontal,
+            this.flipVertical,
+            this.rotate});
+            this.transform.Name = "transform";
+            this.transform.Size = new System.Drawing.Size(72, 20);
+            this.transform.Text = "Transform";
+            this.transform.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.transform_DropDownItemClicked);
+            // 
+            // flipHorizontal
+            // 
+            this.flipHorizontal.Name = "flipHorizontal";
+            this.flipHorizontal.Size = new System.Drawing.Size(180, 22);
+            this.flipHorizontal.Text = "Flip Horizontal";
+            // 
+            // flipVertical
+            // 
+            this.flipVertical.Name = "flipVertical";
+            this.flipVertical.Size = new System.Drawing.Size(180, 22);
+            this.flipVertical.Text = "Flip Vertical";
+            // 
+            // rotate
+            // 
+            this.rotate.Name = "rotate";
+            this.rotate.Size = new System.Drawing.Size(180, 22);
+            this.rotate.Text = "Rotate";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -189,7 +218,6 @@ namespace BasicImageProcessing
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.source)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.result)).EndInit();
             this.menuStrip1.ResumeLayout(false);
@@ -209,16 +237,19 @@ namespace BasicImageProcessing
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem load;
         private System.Windows.Forms.ToolStripMenuItem copy;
-        private System.Windows.Forms.ToolStripMenuItem greyscale;
-        private System.Windows.Forms.ToolStripMenuItem invert;
         private System.Windows.Forms.ToolStripMenuItem histogram;
-        private System.Windows.Forms.ToolStripMenuItem sepia;
         private System.Windows.Forms.ToolStripMenuItem save;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.ToolStripMenuItem effect;
+        private System.Windows.Forms.ToolStripMenuItem greyscale;
+        private System.Windows.Forms.ToolStripMenuItem invert;
+        private System.Windows.Forms.ToolStripMenuItem sepia;
         private System.Windows.Forms.ToolStripMenuItem brightness;
         private System.Windows.Forms.ToolStripMenuItem contrast;
+        private System.Windows.Forms.ToolStripMenuItem transform;
         private System.Windows.Forms.ToolStripMenuItem flipHorizontal;
         private System.Windows.Forms.ToolStripMenuItem flipVertical;
+        private System.Windows.Forms.ToolStripMenuItem rotate;
     }
 }
 

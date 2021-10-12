@@ -41,6 +41,15 @@ namespace BasicImageProcessing
                 case "copy":
                     resultImage = sourceImage.copy();
                     break;
+            }
+            if (resultImage != null)
+                result.Image = resultImage.getBitmap();
+        }
+
+        private void effect_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            switch (e.ClickedItem.Name)
+            {
                 case "greyscale":
                     resultImage = sourceImage.greyscale();
                     break;
@@ -54,13 +63,35 @@ namespace BasicImageProcessing
                     resultImage = sourceImage.brightness(trackBar1.Value);
                     break;
                 case "contrast":
-                    resultImage = sourceImage.contrast(trackBar1.Value);
+                    int max = trackBar1.Maximum;
+                    int min = trackBar1.Minimum;
+                    int oldRange = max - min;
+                    int newRange = 100 - 0;
+                    float newValue = (((trackBar1.Value - min) * newRange) / oldRange) + 0;
+                    resultImage = sourceImage.contrast(newValue);
                     break;
+            }
+            if (resultImage != null)
+                result.Image = resultImage.getBitmap();
+        }
+
+        private void transform_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            switch (e.ClickedItem.Name)
+            {
                 case "flipHorizontal":
                     resultImage = sourceImage.flipHorizontal();
                     break;
                 case "flipVertical":
                     resultImage = sourceImage.flipVertical();
+                    break;
+                case "rotate":
+                    int max = trackBar1.Maximum;
+                    int min = trackBar1.Minimum;
+                    int oldRange = max - min;
+                    int newRange = 360 - 0;
+                    float newValue = (((trackBar1.Value - min) * newRange) / oldRange) + 0;
+                    resultImage = sourceImage.rotate(newValue);
                     break;
             }
             if (resultImage != null)
@@ -71,11 +102,6 @@ namespace BasicImageProcessing
         {
             sourceImage = new BitmapImage(new Bitmap(openFileDialog1.FileName));
             source.Image = sourceImage.getBitmap();
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void saveFileDialog1_FileOk(object sender, CancelEventArgs e)
